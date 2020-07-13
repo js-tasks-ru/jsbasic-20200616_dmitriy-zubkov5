@@ -12,5 +12,5 @@ function makeFriendsList(friends) {
     li.innerHTML += `${friend.firstName} ${friend.lastName}`;
     ul.appendChild(li);
   }
-
+  return ul;
 }
