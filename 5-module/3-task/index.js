@@ -1,38 +1,48 @@
 function initCarousel() {
+  let currentSlideNumber = 0;
+  let slidesAmount = 4;
+  let elem = document.querySelector('[data-carousel-holder]');
 
-  let list = document.querySelector(`.carousel__inner`);
-  let leftButton = document.querySelector(`.carousel__arrow_left`);
-  let rightButton = document.querySelector(`.carousel__arrow_right`);
-  
-  let step = 0;
-  leftButton.style.display = "none";
-  
-  leftButton.addEventListener('click', function() {
-    step += 100;
-  
-    if (step == 0) {
-      leftButton.style.display = "none";
-      rightButton.style.display = "flex";
+  let carouselInnerElem = elem.querySelector('.carousel__inner');
+  let carouselArrowRight = elem.querySelector('.carousel__arrow_right');
+  let carouselArrowLeft = elem.querySelector('.carousel__arrow_left');
+
+  update();
+
+  elem.onclick = ({target}) => {
+    if (target.closest('.carousel__arrow_right')) {
+      next();
     }
-    if (step >= -200) {
-      rightButton.style.display = "flex";
+
+    if (target.closest('.carousel__arrow_left')) {
+      prev();
     }
-    
-    list.style.transform = `translateX(${step}%)`;
-  });
-  
-  rightButton.addEventListener("click", function() {  
-    step -= 100;
-    list.style.transform = `translateX(${step}%)`;
-  
-    if (step < -200) {
-      rightButton.style.display = "none";
-      leftButton.style.display = "flex";
+  };
+
+  function next() {
+    currentSlideNumber++;
+    update();
+  }
+
+  function prev() {
+    currentSlideNumber--;
+    update();
+  }
+
+  function update() {
+    let offset = -carouselInnerElem.offsetWidth * currentSlideNumber;
+    carouselInnerElem.style.transform = `translateX(${offset}px)`;
+
+    if (currentSlideNumber == slidesAmount - 1) {
+      carouselArrowRight.style.display = 'none';
+    } else {
+      carouselArrowRight.style.display = '';
     }
-  
-    if (step < 100) {
-      leftButton.style.display = "flex";
+
+    if (currentSlideNumber == 0) {
+      carouselArrowLeft.style.display = 'none';
+    } else {
+      carouselArrowLeft.style.display = '';
     }
-  }); 
-  
+  }
 }
